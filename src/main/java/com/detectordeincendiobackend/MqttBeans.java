@@ -56,8 +56,8 @@ public class MqttBeans {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(broker, "testClient",
-                        "/topic/data");
+                new MqttPahoMessageDrivenChannelAdapter(broker, "testClient22",
+                        "/status/casa");
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(2);
@@ -72,9 +72,7 @@ public class MqttBeans {
             String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
 
             switch(topic) {
-                case "/topic/data":
-                    System.out.println("/topic/data");
-                    System.out.println(message.getPayload().toString());
+                case "/status/casa":
                     service.analizaValores(message.getPayload().toString());
                     break;
             }
@@ -85,7 +83,7 @@ public class MqttBeans {
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
         MqttPahoMessageHandler messageHandler =
-                new MqttPahoMessageHandler("testClient1", mqttClientFactory());
+                new MqttPahoMessageHandler("testClient21", mqttClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic("/");
 
